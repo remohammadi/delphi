@@ -8,6 +8,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/remohammadi/delphi/common"
+	"github.com/remohammadi/delphi/model"
 )
 
 func main() {
@@ -66,8 +67,11 @@ func main() {
 		}).Infoln()
 	})
 
+	api := model.Api()
+	http.Handle("/api/", http.StripPrefix("/api", api.MakeHandler()))
+
 	bind := fmt.Sprintf("%s:%s", os.Getenv("OPENSHIFT_GO_IP"), os.Getenv("OPENSHIFT_GO_PORT"))
-	fmt.Printf("listening on %s...", bind)
+	logrus.Infof("listening on %s...", bind)
 	err := http.ListenAndServe(bind, nil)
 	if err != nil {
 		panic(err)

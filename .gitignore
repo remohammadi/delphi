@@ -24,5 +24,8 @@ _testmain.go
 *.prof
 
 delphi
+delphi.db
 
 .DS_Store
+
+*.local.*
