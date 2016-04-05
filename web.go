@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"honarnama/common"
 	"net/http"
 	"os"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/remohammadi/delphi/common"
 )
 
 func main() {
