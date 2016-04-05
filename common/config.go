@@ -9,7 +9,9 @@ import (
 )
 
 var defaults = map[string]string{
-	"LOG_LEVEL": "INFO",
+	"LOG_LEVEL":     "INFO",
+	"SERVER_NAME":   "delphi-remohammadi.rhcloud.com",
+	"TEMPLATES_DIR": "./templates",
 }
 
 func ConfigString(name string) string {
