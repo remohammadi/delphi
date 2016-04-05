@@ -67,6 +67,9 @@ func main() {
 		}).Infoln()
 	})
 
+	// TODO:
+	// rand.Seed(time.Now().UTC().UnixNano())
+
 	api := model.Api()
 	http.Handle("/api/", http.StripPrefix("/api", api.MakeHandler()))
 

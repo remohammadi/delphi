@@ -19,7 +19,6 @@ var (
 	db *gorm.DB
 )
 
-// User Model
 type Question struct {
 	ID              int64      `json:"id"              gorm:"primary_key"`
 	CreatedAt       time.Time  `json:"createdAt"`
@@ -106,6 +105,27 @@ func (rf *RestFuncs) PostQuestion(w rest.ResponseWriter, r *rest.Request) {
 	w.WriteJson(&q)
 }
 
+func (rf *RestFuncs) Vote(w rest.ResponseWriter, r *rest.Request) {
+	vote := Vote{}
+	if err := r.DecodeJsonPayload(&vote); err != nil {
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	q := Question{}
+	if db.First(&q, vote.QuestionID).Error != nil {
+		rest.NotFound(w, r)
+		return
+	}
+
+	if err := db.Save(&vote).Error; err != nil {
+		rest.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteJson(&vote)
+}
+
 func Api() *rest.Api {
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
@@ -114,6 +134,7 @@ func Api() *rest.Api {
 	router, err := rest.MakeRouter(
 		rest.Post("/questions", rf.PostQuestion),
 		rest.Get("/questions/:id", rf.GetQuestion),
+		rest.Put("/vote", rf.Vote),
 	)
 	if err != nil {
 		logrus.WithError(err).Fatal("While initializing api router")
