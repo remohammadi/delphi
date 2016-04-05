@@ -12,6 +12,7 @@ var defaults = map[string]string{
 	"LOG_LEVEL":     "INFO",
 	"SERVER_NAME":   "delphi-remohammadi.rhcloud.com",
 	"TEMPLATES_DIR": "./templates",
+	"STATIC_DIR":    "./static",
 }
 
 func ConfigString(name string) string {
