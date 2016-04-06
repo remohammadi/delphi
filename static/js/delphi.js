@@ -167,6 +167,61 @@ var quicksort = function(p) {
 }
 
 
+var lazyLessThan = function(i, j){
+    if(comp_tb[new Pair(orderedItemIndexes[i], orderedItemIndexes[j]).toString()] == -1){
+        return true;
+    }
+    else if(comp_tb[new Pair(orderedItemIndexes[j], orderedItemIndexes[i]).toString()] == -1){
+        return false;
+    }
+    comp_stack.push(new Pair(i, j));
+    lazyLessThan(i, j);
+}
+
+var merge = function(fro, to) {
+    var sorted = new Array();
+    var md = (fro + to)/2;
+    var p1 = fro;
+    var p2 = md +1;
+    for(i = 0 ; i < to - fro + 1 ; i ++){
+        if(p1 <= md){
+            if(p2 <= to){
+                if(lazyLessThan(p1, p2)){
+                    sorted.push(orderedItemIndexes[p1]);
+                    p1 ++;
+                }
+                else{
+                    sorted.push(orderedItemIndexes[p2]);
+                    p2 ++;
+                }
+            }
+            else{
+                sorted.push(orderedItemIndexes[p1]);
+                p1 ++;
+            }
+        }
+        else{
+            sorted.push(orderedItemIndexes[p2]);
+            p2 ++;
+        }
+    }
+    for(i = 0 ; i < to - fro + 1 ; i ++){
+        orderedItemIndexes[i + fro] = sorted[i];
+    }
+}
+
+var mergeSort = function(p) {
+    var fro = p.first;
+    var to = p.second;
+    if(fro < to){
+        var md = (fro + to)/2;
+        mergeSort(new Pair(fro, md));
+        mergeSort(new Pair(md + 1, to));
+        merge(fro, to);
+    }
+}
+
+
 
 $(document).ready(function(){
   $("#items").hide();
@@ -198,7 +253,7 @@ $(document).ready(function(){
     for(n=0; (n < orderedItemIndexes.length) && (ranks[orderedItemIndexes[n]] < 9999); n++);
     var p = new Pair(0, n-1)
     qs_stack.push(p);
-    quicksort(p);
+    mergeSort(new Pair(0, n-1));
   });
 
 
