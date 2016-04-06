@@ -179,10 +179,10 @@ var lazyLessThan = function(i, j){
 }
 
 var merge = function(fro, to) {
-    var sorted = new Array()
-    var md = (fro + to)/2
-    var p1 = fro
-    var p2 = md +1
+    var sorted = new Array();
+    var md = (fro + to)/2;
+    var p1 = fro;
+    var p2 = md +1;
     for(i = 0 ; i < to - fro + 1 ; i ++){
         if(p1 <= md){
             if(p2 <= to){
@@ -205,7 +205,9 @@ var merge = function(fro, to) {
             p2 ++;
         }
     }
-    
+    for(i = 0 ; i < to - fro + 1 ; i ++){
+        orderedItemIndexes[i + fro] = sorted[i];
+    }
 }
 
 var mergeSort = function(p) {
@@ -251,8 +253,7 @@ $(document).ready(function(){
     for(n=0; (n < orderedItemIndexes.length) && (ranks[orderedItemIndexes[n]] < 9999); n++);
     var p = new Pair(0, n-1)
     qs_stack.push(p);
-    quicksort(p);
-    // mergeSort(new Pair(0, n-1));
+    mergeSort(new Pair(0, n-1));
   });
 
 
